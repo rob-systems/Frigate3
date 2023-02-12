@@ -54,10 +54,11 @@ class Menu():
     def select(self):
         # starts game if mouse position is within play game button box 
         play_game_pressed = False
-        if self.selected["text"] == "Play Game":
-            play_game_pressed = True
-        else:
-            play_game_pressed = False
+        if self.selected != None:
+            if self.selected["text"] == "Play Game":
+                play_game_pressed = True
+            else:
+                play_game_pressed = False
         return play_game_pressed
 
     def loop(self, screen, mouse_pos):

@@ -1,6 +1,7 @@
 # Welcome to Frigate
 import pygame, sys, math
 from menu import Menu
+from game import Game
 from pygame.locals import *
 
 
@@ -16,18 +17,30 @@ class Loading():
     def __init__(self):
         self.iter = 0
 
+    def iterate(self):
+        if self.iter <= 360:
+            self.iter += 1
+        else:
+            self.iter = 0
+
     def draw(self, screen):
         # rect object in center of screen
         rect = pygame.Rect(SCREEN_WIDTH / 2 - 25, SCREEN_HEIGHT / 2 - 25, 50, 50)
         # draws a diminishing arc starting at the top of the circle
-        oofset = math.radians(90)
-        pygame.draw.arc(screen, (255,255,255), rect, 0 + offset, -math.radians(self.iter) + offset, 5)
+        offset = math.radians(90)
+        pygame.draw.arc(screen,
+                        (255,255,255),
+                        rect, 0 + offset,
+                        -math.radians(self.iter) + offset,
+                        5)
         # increase stop angle until it reaches FULL CIRCLE
-        if self.iter <= 360:
-            print(self.iter)
-            self.iter += 1
-        else:
-            self.iter = 0
+        self.iterate()
+
+def game_loading(displaysurf,loading):
+    displaysurf.fill((0,0,0))
+    loading.draw(displaysurf)
+    return True
+
 
 
 # Function handling Menu and Game
@@ -35,8 +48,10 @@ def main():
     # Create Display Surface
     displaysurf = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     play_game_pressed = False
+    game_ready = False
     menu = Menu()
     loading = Loading()
+    game = Game({"screen_dimensions": (SCREEN_WIDTH, SCREEN_HEIGHT)})
     while True:
         ############ Quit Event Handling ###########
         for event in pygame.event.get():
@@ -45,15 +60,15 @@ def main():
                 sys.exit()
         ############################################
 
+        # loop through menu until play game has been clicked on
         if not play_game_pressed:
             play_game_pressed = menu.loop(displaysurf, pygame.mouse.get_pos())
         else:
-            game_ready = False
+            # show loading screen until game is ready
             if not game_ready:
-                displaysurf.fill((0,0,0))
-                loading.draw(displaysurf)
+                game_ready = game_loading(displaysurf, loading)
             else:
-                
+               game.loop(displaysurf)
         
         # internally process pygame event handlers
         pygame.event.pump()
