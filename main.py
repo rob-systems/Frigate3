@@ -51,7 +51,6 @@ def main():
     game_ready = False
     menu = Menu()
     loading = Loading()
-    game = Game({"screen_dimensions": (SCREEN_WIDTH, SCREEN_HEIGHT)})
     while True:
         ############ Quit Event Handling ###########
         for event in pygame.event.get():
@@ -66,6 +65,7 @@ def main():
         else:
             # show loading screen until game is ready
             if not game_ready:
+                game = Game({"screen_dimensions": (SCREEN_WIDTH, SCREEN_HEIGHT)})
                 game_ready = game_loading(displaysurf, loading)
             else:
                game.loop(displaysurf)

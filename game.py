@@ -1,5 +1,6 @@
 import pygame, sys, math
 from pygame.locals import *
+from sprites import *
 import ast
 
 pygame.init()
@@ -42,7 +43,7 @@ class Text_Overlay():
         # gets rid of quotations marks that python doesn't like
         file = file.replace("“", '"').replace("”", '"').replace("‘", "'").replace("’", "'")
         # changes format of file to a dict
-        evaluated_file = ast.literal_eval(poop)
+        evaluated_file = ast.literal_eval(file)
         # get a substring of the text from file
         self.text = evaluated_file[self.text_to_be_displayed][0:self.iter:1]
         #increment iter so text gradually shows
@@ -69,16 +70,29 @@ class Game():
                                      "position": (0, map_height)})
         self.text_overlay = Text_Overlay({ "map": (map_width, map_height), "text": "starting_message"})
         self.text_overlay_showing = True
-        self.score
+        self.all_sprites = pygame.sprite.Group()
+        self.User = Boat((200,200))
+        self.all_sprites.add(self.User)
+
+
+    def draw_sprites(self):
+        for sprite in self.all_sprites:
+            sprite.draw_hull(self.map_surface)
 
     def draw(self, screen):
         self.map_surface.fill((0,0,255))
         if self.text_overlay_showing:
             self.text_overlay.draw(self.map_surface)
+        self.draw_sprites()
         screen.blit(self.map_surface, self.rect)
         self.dashboard.draw(screen)
 
+    def update(self):
+        for sprite in self.all_sprites:
+            sprite.update()
+
     # called inside main loop
     def loop(self, screen):
+        self.update()
         self.draw(screen)
         self.text_overlay.update(screen)
