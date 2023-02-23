@@ -1,1 +1,1 @@
-{ ‘starting_message’: ‘Welcome aboard captain, you are on patrol today, start heading north’ }
+{ ‘starting_message’: ‘Welcome aboard captain, you are on patrol today, start heading up’ }

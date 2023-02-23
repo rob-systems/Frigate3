@@ -30,8 +30,12 @@ class Loading():
         offset = math.radians(90)
         pygame.draw.arc(screen,
                         (255,255,255),
-                        rect, 0 + offset,
+                        rect,
+                        #start
+                        0 + offset,
+                        #stop
                         -math.radians(self.iter) + offset,
+                        #width
                         5)
         # increase stop angle until it reaches FULL CIRCLE
         self.iterate()
