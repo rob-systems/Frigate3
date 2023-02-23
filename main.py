@@ -30,8 +30,12 @@ class Loading():
         offset = math.radians(90)
         pygame.draw.arc(screen,
                         (255,255,255),
-                        rect, 0 + offset,
+                        rect,
+                        #start
+                        0 + offset,
+                        #stop
                         -math.radians(self.iter) + offset,
+                        #width
                         5)
         # increase stop angle until it reaches FULL CIRCLE
         self.iterate()
@@ -51,7 +55,6 @@ def main():
     game_ready = False
     menu = Menu()
     loading = Loading()
-    game = Game({"screen_dimensions": (SCREEN_WIDTH, SCREEN_HEIGHT)})
     while True:
         ############ Quit Event Handling ###########
         for event in pygame.event.get():
@@ -66,6 +69,7 @@ def main():
         else:
             # show loading screen until game is ready
             if not game_ready:
+                game = Game({"screen_dimensions": (SCREEN_WIDTH, SCREEN_HEIGHT)})
                 game_ready = game_loading(displaysurf, loading)
             else:
                game.loop(displaysurf)
